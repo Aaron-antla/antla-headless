@@ -18,6 +18,7 @@ import {
 } from '@remix-run/react';
 import {
   useNonce,
+  Script,
   Analytics,
   getShopAnalytics,
   getSeoMeta,
@@ -107,6 +108,10 @@ async function loadCriticalData({request, context}: LoaderFunctionArgs) {
 
   return {
     layout,
+    antla: {
+      sdkKey: env.PUBLIC_ANTLA_SDK_KEY?.trim() || '',
+      sdkUrl: env.PUBLIC_ANTLA_SDK_URL?.trim() || '/antla-sdk.js',
+    },
     seo,
     shop: getShopAnalytics({
       storefront,
@@ -172,6 +177,9 @@ function Layout({children}: {children?: React.ReactNode}) {
           children
         )}
         <ScrollRestoration nonce={nonce} />
+        {data?.antla.sdkKey && (
+          <Script src={data.antla.sdkUrl} waitForHydration />
+        )}
         <Scripts nonce={nonce} />
       </body>
     </html>

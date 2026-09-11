@@ -30,6 +30,7 @@ import {Heading, Section, Text} from '~/components/Text';
 import {Link} from '~/components/Link';
 import {Button} from '~/components/Button';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {AntlaTryOn} from '~/components/AntlaTryOn';
 import {Skeleton} from '~/components/Skeleton';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {ProductGallery} from '~/components/ProductGallery';
@@ -165,6 +166,10 @@ export default function Product() {
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
                 storeDomain={storeDomain}
+              />
+              <AntlaTryOn
+                productId={product.id}
+                variantId={selectedVariant?.id}
               />
               <div className="grid gap-4 py-4">
                 {descriptionHtml && (

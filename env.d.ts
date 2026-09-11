@@ -20,6 +20,9 @@ declare global {
    * Declare expected Env parameter in fetch handler.
    */
   interface Env {
+    PUBLIC_ANTLA_SDK_KEY?: string;
+    PUBLIC_ANTLA_SDK_URL?: string;
+    PUBLIC_ANTLA_API_URL?: string;
     SESSION_SECRET: string;
     PUBLIC_STOREFRONT_API_TOKEN: string;
     PRIVATE_STOREFRONT_API_TOKEN: string;

@@ -11,19 +11,29 @@ export default async function handleRequest(
   remixContext: EntryContext,
   context: AppLoadContext,
 ) {
+  const antlaApiUrl = context.env.PUBLIC_ANTLA_API_URL?.trim();
+  const sdkUrl = context.env.PUBLIC_ANTLA_SDK_URL?.trim() || '/antla-sdk.js';
+  const sdkOrigin = new URL(sdkUrl, request.url).origin;
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
     scriptSrc: [
-      'self',
+      "'self'",
+      sdkOrigin,
       'https://cdn.shopify.com',
       'https://shopify.com',
       'https://www.google-analytics.com',
       'https://www.googletagmanager.com',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
     ],
+    connectSrc: [
+      ...(antlaApiUrl ? [new URL(antlaApiUrl).origin] : []),
+      'https://*.amazonaws.com',
+    ],
+    // Local previews use blob/data URLs; generated images can use provider CDNs.
+    imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
   });
 
   const body = await renderToReadableStream(
